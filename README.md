@@ -11,11 +11,12 @@ Based on the requirements, the sorting algorithms are in sorting.h, the generate
 The executable will be named main.
 For this code we use console output. The project description requires file output which means we must redirect the console output. Therefore, to run the program type:
 
-* ./main > output.txt
+* make run
 
 Since this is not a simple command, a shell script is provided (test.sh). The script will compile and run the code. Note that you may have update the attributes for test.sh to make it an executable file. To ensure that test.sh is an executable file type:
 
 * chmod +x test.sh
+* make test
 
 To compile and run the code type:
 * ./test.sh
