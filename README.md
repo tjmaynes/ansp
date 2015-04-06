@@ -1,4 +1,4 @@
-Asymptotic Notation and Sorting Project README
+Asymptotic Notation and Sorting Project
 ===========================================================================
 
 Note that the information presented in this section is also included in the README file.
