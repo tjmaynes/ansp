@@ -1,5 +1,5 @@
 ﻿// Author: TJ Maynes
-// File: sorting.h
+// File: algorithm.h
 
 #ifndef SORTING_H
 #define SORTING_H
@@ -10,18 +10,22 @@
 bool isRandomPivot;
 
 class sorting{
- public:
-  template<typename T> void insertionsort(T* items, const int& size);
-  template<typename T> void quicksort(T* items, const int& size);
-  template<typename T> void quick_sort(T* items, int low, int high);
-  template<typename T> int partition(T* items, int low, int high);
-  template<typename T> void mergesort(T* items, const int& size);
-  template<typename T> void merge_sort(T* items, int low, int high);
-  template<typename T> void merge(T* items, int low, int middle, int high);
-  template<typename T> bool isSorted(T* items, const int& size);
-  template<typename T> void prettyPrint(T* items, const int& size);
+  public:
+    template<typename T> void insertionsort(T* items, const int& size);
+    template<typename T> void bubblesort(T* items, const int& size);
+    template<typename T> void selectionsort(T* items, const int& size);
+    template<typename T> void quicksort(T* items, const int& size);
+    template<typename T> void quick_sort(T* items, int low, int high);
+    template<typename T> int partition(T* items, int low, int high);
+    template<typename T> void mergesort(T* items, const int& size);
+    template<typename T> void merge_sort(T* items, int low, int high);
+    template<typename T> void merge(T* items, int low, int middle, int high);
+    template<typename T> void heapsort(T* items, const int& size);
+    template<typename T> void buildHeap(T* items, const int& size);
+    template<typename T> void heapify(T* items, int low, const int& size);
+    template<typename T> bool isSorted(T* items, const int& size);
+    template<typename T> void prettyPrint(T* items, const int& size);
 };
-#endif
 
 /*
  * Sort the input T* items using the insertion sort algorithm
@@ -38,7 +42,6 @@ void sorting::insertionsort(T* items, const int& size){
   // instantiate a counter
   int j;
   for (int i = 0; i < size; i++){
-
     // counter to equal i-th value
     j = i;
 
@@ -49,10 +52,59 @@ void sorting::insertionsort(T* items, const int& size){
       j -= 1;
     }
   }
-
-  //check for sortedness
   isSorted(items, size);
   //prettyPrint(items, size, "After, insertion sort: ");
+}
+
+/*
+ * Sort the input T* items using the bubblesort algorithm
+ *
+ * T* items = array of items to be sorted
+ * const int& items = size of the array
+ *
+ * Worst-Case Time Complexity: Θ(n^2)
+ */
+template<typename T>
+void sorting::bubblesort(T* items, const int& size){
+  T temp;
+  for(int i = 0; i <= size; i++){
+    for(int j = 0; j < size; j++){
+      if(items[j] > items[j+1]){
+        temp = items[j];
+        items[j] = items[j+1];
+        items[j+1] = temp;
+      }
+    }
+  }
+  isSorted(items, size);
+}
+
+/*
+ * Sort the input T* items using the selection sort algorithm
+ *
+ * T* items = array of items to be sorted
+ * const int& items = size of the array
+ *
+ * Worst-Case Time Complexity: Θ(n^2)
+ */
+template<typename T>
+void sorting::selectionsort(T* items, const int& size){
+  int low;
+  T temp;
+  for(int i = 0; i < size - 1; i++){
+    low = i;
+    for(int j = i+1; j < size; j++){
+      if(items[j] < items[low]){
+        low = j;
+      }
+    }
+    if(low != i){
+      temp = items[i];
+      items[i] = items[low];
+      items[low] = temp;
+    }
+  }
+  isSorted(items, size);
 }
 
 /*
@@ -138,10 +190,10 @@ int sorting::partition(T* items, int low, int high){
     // if the items are less than the pivot then swap that item with the 
     // firsthigh index and increment firsthigh.
     if (items[i] < items[pivot])
-      {
-	swap(items[i], items[firsthigh]);
-	firsthigh++;
-      }
+    {
+      swap(items[i], items[firsthigh]);
+      firsthigh++;
+    }
   }
 
   // swap pivot with firsthigh value
@@ -191,7 +243,7 @@ void sorting::merge_sort(T* items, int low, int high){
   // we don't want to run out of the range of the array
   if (low < high){
     // find middle
-     int middle = (high + low) / 2;
+    int middle = (high + low) / 2;
 
     // merge sort lower half
     merge_sort(items, low, middle);
@@ -234,26 +286,26 @@ void sorting::merge(T* items, int low, int middle, int high){
 
   // 
   while (!(left.empty() || right.empty())) { 
-      if (left.front() <= right.front()) {
-	// temp variable for the left front element
-	T left_front = left.front();
+    if (left.front() <= right.front()) {
+      // temp variable for the left front element
+      T left_front = left.front();
 
-	// add current left front value to items
-	items[i++] = left_front;
+      // add current left front value to items
+      items[i++] = left_front;
 
-	// pop left front element
-	left.pop();
-      }
-      else {
-	// temp variable for the right front element
-	T right_front = right.front();
+      // pop left front element
+      left.pop();
+    }
+    else {
+      // temp variable for the right front element
+      T right_front = right.front();
 
-	// add current right front value to items
-	items[i++] = right_front;
+      // add current right front value to items
+      items[i++] = right_front;
 
-	// pop right front element
-	right.pop();
-      }
+      // pop right front element
+      right.pop();
+    }
   }
 
   // if there are any leftovers from left queue we want to add them to items.
@@ -272,6 +324,69 @@ void sorting::merge(T* items, int low, int middle, int high){
     right.pop();
   }
 }
+
+/*
+ * Sort the T* input items using the heapsort algorithm
+ *
+ * T* items = array of items to be sorted
+ * const int& items = size of the array
+ *
+ * Worst-Case Time Complexity: Θ(n lg n)
+ */
+template<typename T>
+void sorting::heapsort(T* items, const int& size){
+  T temp;
+  for(int i = size; i >= 2; i--){
+    temp = items[i];
+    items[i] = items[1];
+    items[1] = temp;
+    heapify(items, 1, i - 1);
+  }
+}
+
+/*
+ * buildHeap the items between low (inclusive) and high (exclusive)
+ *
+ * T* items = array of items to be sorted
+ * int low = the lowest index of the array to consider (inclusive)
+ * int high = the highest index of the array to consider (exclusive)
+ *
+ * Worst-Case Time Complexity: Θ(n lg n)
+ */
+template<typename T>
+void sorting::buildHeap(T* items, const int& size){
+  for(int i = size/2; i >= 1; i--){
+    heapify(items, i, size);
+  }
+}
+
+/*
+ * heapify the items between low (inclusive) and high (exclusive)
+ *
+ * T* items = array of items to be sorted
+ * int i = current index
+ * const int& size - size of array
+ *
+ * Worst-Case Time Complexity: Θ(lg n)
+ */
+template<typename T>
+void sorting::heapify(T* items, int i, const int& size){
+  T temp = items[i];
+  int j = 2*i;
+
+  while(j <= size){
+    if(j < size && items[j+1] > items[j])
+      j += 1;
+    if(temp > items[j])
+      break;
+    else if(temp <= items[j]){
+      items[j/2] = items[j];
+      j *= 2;
+    }
+  }
+  items[j/2] = temp;
+}
+
 
 /*
  * isSorted - a boolean that checks whether the array of items is sorted or not.
@@ -311,3 +426,4 @@ void sorting::prettyPrint(T* items, const int& size){
   }
   cout << " " << endl;
 }
+#endif

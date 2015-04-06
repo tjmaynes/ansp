@@ -7,5 +7,8 @@ PROGRAM = main
 main:
 	g++ main.cpp $(CFLAGS) $(PROGRAM)
 
+test:
+	gdb ./main
+
 clean:
 	rm -f $(PROGRAM)
