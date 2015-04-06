@@ -16,7 +16,6 @@ For this code we use console output. The project description requires file outpu
 Since this is not a simple command, a shell script is provided (test.sh). The script will compile and run the code. Note that you may have update the attributes for test.sh to make it an executable file. To ensure that test.sh is an executable file type:
 
 * chmod +x test.sh
-* make test
 
 To compile and run the code type:
-* ./test.sh
+* make test
